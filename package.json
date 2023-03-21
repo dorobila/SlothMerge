@@ -2,10 +2,16 @@
   "name": "slothmerge",
   "version": "0.0.1",
   "description": "A git auto merger tool for all the sloths",
+  "author": "Daniel Dorobantu",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dorobila/SlothMerge"
+  },
   "type": "module",
   "exports": "./dist/index.js",
   "bin": {
-    "slothMerge": "./dist/index.js"
+    "slothmerge": "./dist/index.js"
   },
   "engines": {
     "node": ">=14.16"
@@ -22,8 +28,6 @@
     "format:check": "pnpm format --check",
     "pub:release": "pnpm build && npm publish"
   },
-  "author": "Daniel Dorobantu",
-  "license": "MIT",
   "dependencies": {
     "chalk": "^5.2.0",
     "commander": "^10.0.0",
