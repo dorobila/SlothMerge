@@ -1,6 +1,6 @@
 {
   "name": "slothmerge",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A git auto merger tool for all the sloths",
   "author": "Daniel Dorobantu",
   "license": "MIT",
@@ -26,9 +26,12 @@
     "lint:fix": "pnpm lint --fix",
     "format": "prettier --write --plugin-search-dir=. **/*.{cjs,mjs,ts,tsx,md,json} --ignore-path ./.gitignore --ignore-unknown --no-error-on-unmatched-pattern",
     "format:check": "pnpm format --check",
+    "release": "npx changeset version",
     "pub:release": "pnpm build && npm publish"
   },
   "dependencies": {
+    "@changesets/changelog-github": "^0.4.8",
+    "@changesets/cli": "^2.26.0",
     "chalk": "^5.2.0",
     "commander": "^10.0.0",
     "execa": "^7.1.1",
