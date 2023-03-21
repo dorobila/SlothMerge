@@ -29,6 +29,7 @@ export async function checkoutAndPull(
         `Pulling latest changes from ${targetBranch} branch`,
       );
       await execa("git", ["pull"]);
+
       spinner.text = chalk.cyan(
         `Merging ${currentBranchName} branch into ${targetBranch} branch`,
       );
@@ -38,11 +39,16 @@ export async function checkoutAndPull(
         "-m",
         `Merge branch '${currentBranchName}' into ${targetBranch} sloth style`,
       ]);
+
+      await execa("git", ["push"]);
+      spinner.text = chalk.cyan(
+        `Pushing ${currentBranchName} branch into ${targetBranch} branch`,
+      );
     }
 
     spinner.succeed(
       `${chalk.green(
-        `Finished checking out and pulling changes from ${targetBranches.join(
+        `Finished merging changes from ${currentBranchName} to ${targetBranches.join(
           ", ",
         )} branches`,
       )}`,
