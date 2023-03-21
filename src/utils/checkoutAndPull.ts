@@ -3,6 +3,14 @@ import { execa } from "execa";
 import ora from "ora";
 import { type branches } from "~/index.js";
 
+/**
+ * Checks out the specified branch and pulls the latest changes from it. Merges the current working
+ * branch with the specified branch. Pushes the merged changes into the specified branch.
+ *
+ * @param {string} currentBranchName - Name of the current working branch.
+ * @param {string} branch - Branch to merge changes into. Can be "develop", "staging", or "both".
+ * @returns {void} - Returns nothing.
+ */
 export async function checkoutAndPull(
   currentBranchName: string,
   branch: branches,

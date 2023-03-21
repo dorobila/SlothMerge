@@ -10,6 +10,10 @@ const poimandresTheme = {
   yellow: "#fffac2",
 };
 
+/**
+ * Renders the title of the application to the console.
+ * @returns {void} - Returns nothing, as this function only logs to the console.
+ */
 export const renderTitle = () => {
   const slothMerge = gradient(Object.values(poimandresTheme));
 

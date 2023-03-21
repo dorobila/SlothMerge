@@ -1,5 +1,12 @@
 import inquirer from "inquirer";
 
+/**
+ * Asks the user to select a branch name where they want to merge their changes.
+ *
+ * @returns {Promise<string>} - A Promise that resolves to a string representing the selected
+ *          destination branch name.
+ */
+
 export async function askBranchName(): Promise<string> {
   const { branch } = await inquirer.prompt([
     {
