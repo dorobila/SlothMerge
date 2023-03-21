@@ -1,36 +1,50 @@
-import { execa } from "execa";
-import ora from "ora";
 import chalk from "chalk";
-import { renderTitle } from "./utils/renderTitle.js";
+import inquirer from "inquirer";
+import { getCurrentBranchName } from "~/utils/getCurrentBranchName.js";
+import { renderTitle } from "~/utils/renderTitle.js";
+import { checkoutAndPull } from "~/utils/checkoutAndPull.js";
+import { askBranchName } from "~/utils/askBranchName.js";
 
-renderTitle();
+export type branches = "develop" | "staging" | "both";
 
-type branches = "develop" | "staging";
+async function main(): Promise<void> {
+  renderTitle();
 
-async function checkoutAndPull(branch: branches) {
-  const spinner = ora(
-    `${chalk.cyan(`Checking out to ${branch} branch`)}`,
-  ).start();
+  const branchToMerge = (await askBranchName()) as branches;
+  const currentBranchName = await getCurrentBranchName();
+  console.log(`You chose to merge changes into: ${chalk.green(branchToMerge)}`);
 
-  try {
-    await execa("git", ["checkout", branch]);
+  const { isCurrentBranch } = await inquirer.prompt([
+    {
+      type: "confirm",
+      name: "isCurrentBranch",
+      message: `Are you sure you want to merge ${chalk.green(
+        currentBranchName,
+      )} into ${chalk.green(branchToMerge)}?`,
+    },
+  ]);
 
-    spinner.text = "Pulling latest changes";
-
-    await execa("git", ["pull", branch]);
-
-    spinner.succeed(
-      `${chalk.green(
-        `Finished checking out and pulling changes from ${branch} branch`,
-      )}`,
+  if (!isCurrentBranch) {
+    console.log(
+      `Please switch to the correct branch name before merging changes.`,
     );
-  } catch (err) {
-    if (err instanceof Error) {
-      spinner.fail(`Error: ${err}`);
-    } else {
-      throw err;
-    }
+    process.exit(1);
   }
+
+  await checkoutAndPull(currentBranchName, branchToMerge);
 }
 
-await checkoutAndPull("develop");
+await main().catch((err) => {
+  console.log(chalk.red("Aborting installation..."));
+  if (err instanceof Error) {
+    console.log(chalk.red(err));
+  } else {
+    console.log(
+      chalk.red(
+        "An unknown error has occurred. Please open an issue on github with the below:",
+      ),
+    );
+    console.log(err);
+  }
+  process.exit(1);
+});
